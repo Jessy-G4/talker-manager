@@ -44,6 +44,17 @@ async function PutData(id, valorAtt) {
       }
       }   
 
+      async function DeleteData(id) {
+        try {
+          const valoresAntigos = await ReadData();
+          const removeValores = valoresAntigos.filter((valorAtual) => valorAtual.id !== id);
+          const todosOsValores = JSON.stringify(removeValores);
+          await fs.writeFile(path.resolve(__dirname, CAMINHO), todosOsValores);
+        } catch (error) {
+            console.log('deu ruim');
+        }
+        }   
+
 // https://stackoverflow.com/questions/70566188/node-js-crypto-randombytes-is-not-a-function
 const crypto = require('crypto');
 
@@ -70,6 +81,13 @@ const { email, password } = req.body;
   }
   next();
 }
+
+function middleWareParaPassarNoReq7(req, res, next) {  
+  const { authorization } = req.headers;
+  if (!authorization) { return res.status(401).send({ message: 'Token não encontrado' }); }
+  if (authorization.length < 16) { return res.status(401).send({ message: 'Token inválido' }); }
+  next();
+  }
 
 function validando1(req, res, next) {
 const { name } = req.body;    
@@ -146,4 +164,6 @@ module.exports = {
     validando4,
     validandoTalk,
     PutData,
+    DeleteData,
+    middleWareParaPassarNoReq7,
 };

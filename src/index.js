@@ -20,6 +20,8 @@ const {
    validando4,
    validandoTalk,
    PutData,
+   middleWareParaPassarNoReq7,
+   DeleteData,
   } = require('./fsUtility');
 
 app.get('/talker', async (_request, response) => {
@@ -66,6 +68,13 @@ const { id } = req.params;
  const valor = req.body;
  const test = await PutData(Number(id), valor);
  res.status(200).send(test);
+});
+
+app.delete('/talker/:id', middleWareParaPassarNoReq7,
+async (req, res) => {
+const { id } = req.params;
+const test = await DeleteData(Number(id));
+ res.status(204).send(test);
 });
 // fim do meu codigo
 
