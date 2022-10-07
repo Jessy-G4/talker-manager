@@ -9,7 +9,17 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 // meu codigo
-const { ReadData, CriarToken, validacao } = require('./fsUtility');
+const { 
+   ReadData,
+   CriarToken, 
+   validacao, 
+   WriteData, 
+   validando1, 
+   validando2, 
+   validando3,
+   validando4,
+   validandoTalk,
+  } = require('./fsUtility');
 
 app.get('/talker', async (_request, response) => {
   const valores = await ReadData();
@@ -32,7 +42,19 @@ app.post('/login', validacao, async (req, res) => {
   res.status(HTTP_OK_STATUS).send({ token });
 });
 
-app.post('/login', async (req, res) => res.status(HTTP_OK_STATUS).send());
+app.post('/talker', 
+validando1, 
+validandoTalk,
+validando2, 
+validando3, 
+validando4, 
+async (req, res) => {
+ const valor = req.body;
+ console.log(valor);
+ const test = await WriteData(valor);
+ console.log(test);
+ res.status(201).send(test);
+});
 
 // fim do meu codigo
 
