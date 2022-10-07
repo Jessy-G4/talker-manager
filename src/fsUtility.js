@@ -26,6 +26,24 @@ async function WriteData(novoValor) {
     }
     }
 
+async function PutData(id, valorAtt) {
+      try {
+        const valoresAntigos = await ReadData();
+        const valorAtualizado = { id, ...valorAtt };
+        const updateValores = valoresAntigos.reduce((listaDeValores, valorAtual) => {
+          if (valorAtual.id === valorAtualizado.id) {
+            return [...listaDeValores, valorAtualizado];
+          }
+          return [...listaDeValores, valorAtual];
+        }, []);
+        const todosOsValores = JSON.stringify(updateValores);
+        await fs.writeFile(path.resolve(__dirname, CAMINHO), todosOsValores);
+        return valorAtualizado;
+      } catch (error) {
+          console.log('deu ruim');
+      }
+      }   
+
 // https://stackoverflow.com/questions/70566188/node-js-crypto-randombytes-is-not-a-function
 const crypto = require('crypto');
 
@@ -99,6 +117,9 @@ const { watchedAt, rate } = req.body.talk;
         message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
       }); 
 }
+if (rate < 1) {
+  return res.status(400).send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
+}
 if (!rate) {
     return res.status(400).send({ message: 'O campo "rate" é obrigatório' });
 }
@@ -124,4 +145,5 @@ module.exports = {
     validando3,
     validando4,
     validandoTalk,
+    PutData,
 };

@@ -19,6 +19,7 @@ const {
    validando3,
    validando4,
    validandoTalk,
+   PutData,
   } = require('./fsUtility');
 
 app.get('/talker', async (_request, response) => {
@@ -50,12 +51,22 @@ validando3,
 validando4, 
 async (req, res) => {
  const valor = req.body;
- console.log(valor);
  const test = await WriteData(valor);
- console.log(test);
  res.status(201).send(test);
 });
 
+app.put('/talker/:id', 
+validando1, 
+validandoTalk,
+validando2, 
+validando3, 
+validando4, 
+async (req, res) => {
+const { id } = req.params;
+ const valor = req.body;
+ const test = await PutData(Number(id), valor);
+ res.status(200).send(test);
+});
 // fim do meu codigo
 
 // não remova esse endpoint, e para o avaliador funcionar
